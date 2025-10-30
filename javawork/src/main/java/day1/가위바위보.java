@@ -52,6 +52,6 @@ public class 가위바위보 {
 			
 		}
 		System.out.println("최종 결과 : " + win + "승 " + draw + "무 " + lose + "패");
-	}
+	}// end main
 
 }
