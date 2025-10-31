@@ -11,7 +11,7 @@ public class StringUtil {
 	 * @return
 	 */
 	public static String getYear(String id) {
-		// id가 없으면 반값 리턴
+		// id가 없으면 빈값 리턴
 		if (id == null) {
 			return "";
 		}
