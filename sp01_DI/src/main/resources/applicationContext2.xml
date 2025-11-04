@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                       http://www.springframework.org/schema/beans/spring-beans.xsd 
+                       http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- base-package를 com으로 설정해두면 자동으로 아래 패키지를 다 스캔한다 -->
+	<!-- 특정 패키지만 스캔하도록 설정 할 수 있다. -->
+	<context:component-scan
+		base-package="com.exam" />
+	<!-- <context:annotation-config/> -->
+</beans>
