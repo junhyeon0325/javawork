@@ -40,6 +40,18 @@
 			<version>1.18.38</version>
 			<scope>provided</scope>
 		</dependency>
+		<!-- SLF4J → Log4j Bridge (Spring은 SLF4J를 통해 로깅) -->
+		<!-- log4j-core, log4j-api 같이 설치됨 -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-slf4j-impl</artifactId>
+			<version>2.24.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.bgee.log4jdbc-log4j2</groupId>
+			<artifactId>log4jdbc-log4j2-jdbc4.1</artifactId>
+			<version>1.16</version>
+		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
