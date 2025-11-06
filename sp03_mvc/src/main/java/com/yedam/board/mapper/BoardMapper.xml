@@ -39,13 +39,14 @@
 		UPDATE tbl_board
         SET    TITLE = #{title},
         	   CONTENT = #{content}
-        WHERE  BNO = #{bno}
+        WHERE  bno = #{bno}
 	</update>
 	
-	<delete id="delete">
-		DELETE from tbl_board
-		WHERE  bno = #{bno}
+	<!-- in 모드는 생략가능 -->
+	<delete id="delete" statementType="CALLABLE" parameterType="Map">
+		{ call PROC_BOARD_DELETE( #{bno} , #{result, mode=OUT, jdbcType=VARCHAR, javaType=string} ) }
 	</delete>
+	
 	
 	<select id="count">
 		SELECT count(*)
@@ -61,6 +62,13 @@
 		  <if test="title != null">AND title like '%' || #{title} || '%'</if>
 		</where>
 		<!-- '%${  }%' 이게 위에 like랑 같은거다 -->
+	</select>
+	
+	<!-- 단건조회 -->
+	<select id="getBoard">
+		select *
+		from   tbl_board
+		where  bno = #{bno}
 	</select>
 
 </mapper>

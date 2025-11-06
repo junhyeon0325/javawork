@@ -29,4 +29,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 	
 	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver" />
 	
+	<annotation-driven validator="validator" /> 
+ 
+	<beans:bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
 </beans:beans>

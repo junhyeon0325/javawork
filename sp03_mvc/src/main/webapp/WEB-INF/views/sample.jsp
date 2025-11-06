@@ -13,6 +13,7 @@
 	<input name="age">
 	<input name="birth" type="date">
 	<input name="profile" type="file">
+	<button>등록</button>
 </form>
 
 </body>

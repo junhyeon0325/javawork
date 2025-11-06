@@ -39,7 +39,7 @@
     <c:forEach items="${list}" var="board">
       <div class="card board-card">
         <div class="card-header d-flex justify-content-between align-items-center">
-          <span>📌 ${board.title}</span>
+          <span>📌 <a href="/board/update?bno=${board.bno}">${board.title}</a></span>
           <span class="badge bg-light text-dark">No.${board.bno}</span>
         </div>
         <div class="card-body">
