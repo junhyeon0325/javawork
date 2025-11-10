@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>static/emp.html</title>
+</head>
+<body>
+<h3>사원관리</h3>
+<table>
+	<thead>
+		<tr>
+			<th>사원번호</th>
+			<th>이름</th>
+			<th>email</th>
+			<th>급여</th>
+		</tr>
+	</thead>
+	<tbody id="empList">
+		
+	</tbody>
+</table>
+<script>
+getList();
+function getList(){
+	fetch("/emp")
+		.then((response) => response.json())
+		.then((datas) => {
+			let reply = document.querySelector("#empList");
+			for(data of datas){
+				let newTag =
+					`<tr class="row mb-2" data-rno="${data.rno}">
+						<td class="col">${data.employeeId}</div>
+						<td class="col">${data.lastName}</div>
+						<td class="col">${data.email}</div>
+						<td class="col">${data.salary}</div>
+					</tr>`
+				  reply.insertAdjacentHTML("beforeend",newTag);
+			}
+		})	
+}
+</script>
+</body>
+</html>
