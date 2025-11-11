@@ -21,7 +21,12 @@ public class WebSecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests((requests) -> requests.requestMatchers("/", "/home", "/css/*", "/js/*", "/assets/*")
 				.permitAll().requestMatchers("/admin/*", "/empMain").hasRole("ADMIN").anyRequest().authenticated())
-				.formLogin((form) -> form.permitAll().loginPage("/login").usernameParameter("userid").successForwardUrl("/board"))
+				.formLogin((form) -> form
+						.permitAll()
+						.loginPage("/login")
+						//.usernameParameter("userid")
+						//.successForwardUrl("/board")
+						)
 				.logout((logout) -> logout.deleteCookies("JSESSIONID").permitAll()).csrf(csrf -> csrf.disable());
 
 		return http.build();

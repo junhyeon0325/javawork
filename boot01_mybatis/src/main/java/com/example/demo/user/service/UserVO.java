@@ -27,7 +27,7 @@ public class UserVO implements UserDetails {
 		for(String r : role) {
 			list.add(new SimpleGrantedAuthority(r));
 		}
-		return null;
+		return list;
 	}
 
 	@Override
