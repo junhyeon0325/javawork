@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout}">
+<head>
+<meta charset="UTF-8">
+<title>board/list</title>
+<style>
+	.writer { color : blue; }
+	.bold { font-weight: bold; }
+</style>
+</head>
+<body>
+	<div layout:fragment="content">
+		<a th:href="@{/board/{bno}/{rno}/info(bno=7, rno=5)}">링크연습</a>
+		<table>
+			<tr>
+				<th>글번호</th>
+				<th>제목</th>
+				<th>작성자</th>
+				<th>작성일</th>
+			</tr>
+
+			<tr th:each="board, stat : ${list}" th:object="${board}">
+				<td>[[${stat.count}]] [[${board.bno}]]</td>
+				<td><a th:href="@{/board/info(bno=${board.bno})}"
+					th:text="*{title}"></a></td>
+				<td th:text="${board.writer}" class="writer" th:classappend="${board.writer == 'user01' ? 'bold' : _ }"></td>
+				<td th:text="${#dates.format(board.regdate,'yyyy-MM-dd')}"></td>
+			</tr>
+		</table>
+	</div>
+	<div id="mainFooter" th:insert="~{footer::copyKr}"></div>
+</body>
+</html>

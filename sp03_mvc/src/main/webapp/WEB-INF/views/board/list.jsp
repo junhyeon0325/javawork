@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="my" tagdir="/WEB-INF/tags" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -33,13 +35,22 @@
   </style>
 </head>
 <body>
+  ${header["user-agent"] }
+  <hr>
+  쿠키 : ${cookie.JSESSIONID.value }
+  <hr>
   <div class="container-lg py-5">
+    <my:header></my:header>
+    <my:search></my:search>
     <h2 class="mb-4 fw-bold text-center text-primary">📋 게시글 목록</h2>
-
-    <c:forEach items="${list}" var="board">
+	<div>총게시글수 ${fn:length(list)}	</div>
+    <c:forEach items="${list}" var="board" varStatus="status">
+      <c:if test="${status.first}">목록시작</c:if>
+      <div>${status.count }</div>
+      <hr>
       <div class="card board-card">
         <div class="card-header d-flex justify-content-between align-items-center">
-          <span>📌 ${board.title}</span>
+          <span>📌 <a href="/board/update?bno=${board.bno}">${board.title}</a></span>
           <span class="badge bg-light text-dark">No.${board.bno}</span>
         </div>
         <div class="card-body">

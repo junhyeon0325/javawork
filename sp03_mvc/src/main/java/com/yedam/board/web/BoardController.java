@@ -1,13 +1,19 @@
 package com.yedam.board.web;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.yedam.board.BoardVO;
 import com.yedam.board.mapper.BoardMapper;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class BoardController {
@@ -15,7 +21,10 @@ public class BoardController {
 	
 	// 전체조회
 	@GetMapping("/board")
-	public String selectall(Model model) {
+	public String selectall(Model model, HttpServletRequest request, @CookieValue("JSESSIONID") String sessionid) {
+		System.out.println("client ip:" + request.getRemoteAddr());
+		System.out.println("user-agent:" + request.getHeader("user-agent"));
+		System.out.println("cookie:" + sessionid);
 		model.addAttribute("list",boardMapper.getList());
 		return "board/list";
 	}
@@ -32,4 +41,30 @@ public class BoardController {
 		boardMapper.insert(board);
 		return "redirect:/board";
 	}
+	
+	// 수정페이지로이동
+	@GetMapping("/board/update") // /board/update?bno=1  /board/update/1
+	public String updatepage(Model model, @RequestParam("bno") Long bno ) {
+		
+		BoardVO vo = boardMapper.getBoard(bno);
+		
+		model.addAttribute("board", vo);
+		
+		return "board/register";
+	}
+	
+	// 수정처리
+	@PostMapping("/board/update") 
+	public String update(BoardVO board) {
+		boardMapper.update(board);
+		return "redirect:/board";
+	}
+	
+	// 삭제처리
+	@PostMapping("/board/delete") 
+	public String delete(@RequestParam Map<String, Object> map) {
+		boardMapper.delete(map);
+		return "redirect:/board";
+	}
+	
 }

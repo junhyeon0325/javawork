@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 인터페이스 위치? -->
+<mapper namespace="com.yedam.board.mapper.BoardMapper">
+	<resultMap type="BoardVO" id="boardmap">
+		<id column="bno" property="bno" />
+		<result column="TITLE" property="title" />
+		<result column="WRITER" property="writer" />
+		<result column="CONTENT" property="content" />
+		<result column="REGDATE" property="regdate" />
+		<result column="UPDATEDATE" property="updatedate" />
+		<collection property="reply" ofType="ReplyVO">
+			<id column="RNO" property="rno"/>
+			<result column="REPLY" property="reply"/>
+			<result column="REPLYER" property="replyer"/>
+		</collection>
+	</resultMap>
+
+	<select id="getList" resultMap="boardmap">
+		SELECT A.*,
+		       B.RNO,
+		       B.REPLY,
+		       B.REPLYER
+		FROM   TBL_BOARD A
+		       LEFT OUTER JOIN TBL_REPLY B
+		       ON A.BNO = B.BNO
+	</select>
+	
+	<insert id="insert" >
+		<selectKey keyProperty="bno" order="BEFORE" resultType="long">
+		  SELECT seq_board.nextval
+		  FROM   dual
+		</selectKey>
+		INSERT INTO TBL_BOARD(BNO, TITLE, CONTENT, WRITER)
+        VALUES ( #{bno}, #{title}, #{content}, #{writer})
+	</insert>
+	
+	<update id="update" >
+		UPDATE tbl_board
+        SET    TITLE = #{title},
+        	   CONTENT = #{content}
+        WHERE  bno = #{bno}
+	</update>
+	
+	<!-- in 모드는 생략가능 -->
+	<delete id="delete" statementType="CALLABLE" parameterType="Map">
+		{ call PROC_BOARD_DELETE( #{bno} , #{result, mode=OUT, jdbcType=VARCHAR, javaType=string} ) }
+	</delete>
+	
+	
+	<select id="count">
+		SELECT count(*)
+		FROM   tbl_board
+	</select>
+	
+	<select id="getListByWriter">
+		SELECT *
+		FROM   tbl_board
+		<!-- 소문자 where로 감싸서 만들면 조건이 해당하면 그 줄이 실행된다. -->
+		<where>
+		  <if test="writer != null">AND writer like '%' || #{writer} || '%'</if>
+		  <if test="title != null">AND title like '%' || #{title} || '%'</if>
+		</where>
+		<!-- '%${  }%' 이게 위에 like랑 같은거다 -->
+	</select>
+	
+	<!-- 단건조회 -->
+	<select id="getBoard">
+		select *
+		from   tbl_board
+		where  bno = #{bno}
+	</select>
+
+</mapper>
