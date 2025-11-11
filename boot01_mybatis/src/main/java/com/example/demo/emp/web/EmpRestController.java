@@ -20,7 +20,6 @@ public class EmpRestController {
 	
 	@GetMapping("")
 	public List<EmpVO> empList(EmpVO vo) {
-		int a = 5/0;
 		return empService.getEmpList(vo);
 	}
 }
