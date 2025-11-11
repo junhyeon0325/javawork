@@ -1,6 +1,5 @@
 package com.example.demo.board.web;
 
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.board.service.BoardService;
 import com.example.demo.board.service.BoardVO;
@@ -18,13 +16,6 @@ import com.example.demo.board.service.BoardVO;
 public class BoardController {
 	@Autowired
 	BoardService boardService;
-
-	// json
-	@GetMapping("/api/board")
-	@ResponseBody // 응답결과를 json으로 바꾼다.
-	public List<BoardVO> selectJson() {
-		return boardService.getList();
-	}
 
 	// 전체조회
 	@GetMapping("/board")

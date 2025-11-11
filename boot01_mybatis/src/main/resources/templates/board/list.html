@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>board/list</title>
+</head>
+<body>
+	<a th:href="@{/board/{bno}/{rno}/info(bno=7, rno=5)}">링크연습</a>
+	<table>
+		<tr>
+			<th>글번호</th>
+			<th>제목</th>
+			<th>작성자</th>
+			<th>작성일</th>
+		</tr>
+		
+		<tr th:each="board, stat : ${list}" th:object="${board}">
+			<td>[[${stat.count}]] [[${board.bno}]]</td>
+			<td><a th:href="@{/board/info(bno=${board.bno})}" th:text="*{title}"></a></td>
+			<td th:text="${board.writer}"></td>
+			<td th:text="${#dates.format(board.regdate,'yyyy-MM-dd')}"></td>
+		</tr>
+	</table>
+</body>
+</html>
