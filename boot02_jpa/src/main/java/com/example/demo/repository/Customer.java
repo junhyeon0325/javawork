@@ -2,6 +2,8 @@ package com.example.demo.repository;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,9 +19,11 @@ import lombok.NoArgsConstructor;
 // 지금 하고 있는게 orm 매핑해서 테이블을 알아서 만들어 준다
 // 그래서 이걸할려면 Entity annotation을 만들어줘야한다.
 // @Id 를 넣어서 기본키, primary키를 설정
+// setter는 안넣음 setter는 업데이트? 뭐 하는거라 안만든다?
 
+//@DynamicUpdate
 @NoArgsConstructor
-@Getter
+@Getter 
 @Entity
 public class Customer {
 	
@@ -46,5 +50,8 @@ public class Customer {
 		this.email = email;
 	}
 	
-	
+	public void updateNameAndEmail(String name, String email) {
+		this.name = name;
+		this.email = email;
+	}
 }
