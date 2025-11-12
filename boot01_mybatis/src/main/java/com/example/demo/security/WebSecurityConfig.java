@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
 @EnableWebSecurity // 모든 web설정을 다 바꿔줌
@@ -16,21 +17,28 @@ public class WebSecurityConfig {
 	PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder(10);
 	}
+	
+	@Bean
+	public AuthenticationSuccessHandler authenticationSuccessHandler() {
+		return new CustomLoginSuccessHandler();
+	}
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests((requests) -> requests.requestMatchers("/", "/home", "/css/*", "/js/*", "/assets/*")
 				.permitAll().requestMatchers("/admin/*", "/empMain").hasRole("ADMIN").anyRequest().authenticated())
-				.formLogin((form) -> form
-						.permitAll()
+				.formLogin((form) -> form.permitAll()
 						.loginPage("/login")
-						//.usernameParameter("userid")
-						//.successForwardUrl("/board")
+						.usernameParameter("userid")
+						.successHandler(authenticationSuccessHandler())
 						)
-				.logout((logout) -> logout.deleteCookies("JSESSIONID").permitAll()).csrf(csrf -> csrf.disable());
+				.logout((logout) -> logout.deleteCookies("JSESSIONID").permitAll());
+				//.csrf(csrf -> csrf.disable());
+				// csrf 를 주석처리하면 오류가 난다?
 
 		return http.build();
 	}
 
-
+	
+	
 }
