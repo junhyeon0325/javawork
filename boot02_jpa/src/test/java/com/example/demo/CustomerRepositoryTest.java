@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.example.demo.repository.Address;
+import com.example.demo.repository.AddressRepository;
 import com.example.demo.repository.Customer;
 import com.example.demo.repository.CustomerNative;
 import com.example.demo.repository.CustomerRepository;
@@ -21,6 +23,9 @@ public class CustomerRepositoryTest {
 
 	@Autowired
 	CustomerRepository customerRepository;
+
+	@Autowired
+	AddressRepository addressRepository;
 
 	@Disabled
 	@Test
@@ -59,51 +64,69 @@ public class CustomerRepositoryTest {
 		assertEquals(updated.getName(), customer.getName());
 		log.info("수정된	고객	이름:	{}", updated.getName());
 	}
-	
+
 	@Disabled
 	@Test
 	public void 이름_조회() {
 		// given
 		String name = "둘리";
 		String email = "a@";
-		
+
 		// when
 		List<Customer> list = customerRepository.findByName(name);
 		list.stream().forEach(cust -> System.out.println(cust.getName()));
 		List<Customer> list2 = customerRepository.findByNameLike("%" + name + "%");
 		list2.stream().forEach(cust -> System.out.println(cust.getName()));
-		
+
 		// 이메일검색
 		List<Customer> list3 = customerRepository.findByEmailContaining(email);
 		list3.stream().forEach(emails -> System.out.println(emails.getEmail()));
-		
+
 		// OR
 		List<Customer> list4 = customerRepository.findByNameOrEmailContaining(name, email);
 		list4.stream().forEach(emails -> System.out.println(emails.getEmail() + " / " + emails.getName()));
-		
+
 		// then
 		assertEquals(list.get(0).getName(), name);
 	}
-	
+
 	@Disabled
 	@Test
 	public void 네이티브_쿼리() {
-		List<Object[]> list = customerRepository.findAllNative("011","둘리");
+		List<Object[]> list = customerRepository.findAllNative("011", "둘리");
 		// 이름 폰번호 출력
-		for(Object[] cust : list) {
+		for (Object[] cust : list) {
 			System.out.println(cust[0] + ":" + cust[1]);
 		}
-		
+
 		// List<VO> 결과받기
-		List<CustomerNative> list2 = customerRepository.findAllNativeVO("011","둘리");
-		for(CustomerNative cust : list2) {
+		List<CustomerNative> list2 = customerRepository.findAllNativeVO("011", "둘리");
+		for (CustomerNative cust : list2) {
 			System.out.println("이름:" + cust.getName() + ",폰번호:" + cust.getPhone());
 		}
 	}
-	
+
+	@Disabled
 	@Test
 	public void jqpl_test() {
 		List<Customer> list = customerRepository.findAllQuery();
 		list.stream().forEach(cust -> System.out.println(cust.getName()));
+	}
+
+	@Test
+	public void 일대일() {
+		// given(준비) 준비를 하기 위한 준비단계
+		Address addressEntity = Address.builder().zipcode("04411").address("대구").build();
+		addressRepository.save(addressEntity);
+
+		Customer customerentity = Customer.builder().name("길동").address(addressEntity).build();
+		Customer saved = customerRepository.save(customerentity);
+
+		// when(실행)
+		Customer customer = customerRepository.findById(saved.getId()).get();
+		log.info(customer.getName() + ":" + customer.getAddress().getZipcode());
+		
+		// then(검증)
+		assertEquals("04411", customer.getAddress().getZipcode());
 	}
 }

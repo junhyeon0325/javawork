@@ -2,13 +2,13 @@ package com.example.demo.repository;
 
 import java.time.LocalDateTime;
 
-import org.hibernate.annotations.DynamicUpdate;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.Builder;
@@ -40,18 +40,25 @@ public class Customer {
 	@Temporal(TemporalType.TIMESTAMP)
 	LocalDateTime regdate;
 	
+	@OneToOne
+	@JoinColumn(name = "address_id")
+	Address address;
+	
 	// 이렇게 하면 3개만 추가 할 수 있다.
 	// 이친구가 들어가면 기본생성자가 필요하다 noargsconstructor
 	@Builder
-	public Customer(String name, String phone, String email) {
+	public Customer(String name, String phone, String email, Address address) {
 		super();
 		this.name = name;
 		this.phone = phone;
 		this.email = email;
+		this.address = address;
 	}
 	
 	public void updateNameAndEmail(String name, String email) {
 		this.name = name;
 		this.email = email;
 	}
+	
+	
 }
