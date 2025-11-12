@@ -3,6 +3,8 @@ package com.example.demo.board.web;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.board.service.BoardService;
 import com.example.demo.board.service.BoardVO;
+import com.example.demo.user.service.UserVO;
 
 @Controller
 public class BoardController {
@@ -19,7 +22,18 @@ public class BoardController {
 
 	// 전체조회
 	@GetMapping("/board")
-	public String selectall(Model model) {
+	public String selectall(Model model, @AuthenticationPrincipal UserVO userVO) {
+		// 세션조회
+		System.out.println("로그인 사용자" + userVO.getFullName());
+		
+		UserVO user = (UserVO)SecurityContextHolder
+								.getContext()
+								.getAuthentication()
+								.getPrincipal();
+		System.out.println("시큐리티 컨텍스트: " + userVO.getRole()); // getRole가 관리자인지 아닌지가 나온다?
+		
+//		String userid = SecuUtil.getName(); // 
+		
 		model.addAttribute("list", boardService.getList());
 		return "board/list";
 	}
@@ -33,6 +47,7 @@ public class BoardController {
 	// 등록처리
 	@PostMapping("/board/register")
 	public String register(BoardVO board) {
+		// 로그인된 사용자 ID
 		boardService.insert(board);
 		return "redirect:/board";
 	}
