@@ -114,19 +114,30 @@ public class CustomerRepositoryTest {
 	}
 
 	@Test
-	public void 일대일() {
+	public void 일대다() {
 		// given(준비) 준비를 하기 위한 준비단계
-		Address addressEntity = Address.builder().zipcode("04411").address("대구").build();
-		addressRepository.save(addressEntity);
+		Customer customerentity = Customer.builder().name("길동").phone("019").email("c@c.c").build();
+		Customer saved = customerRepository.save(customerentity); // Customer 객체
 
-		Customer customerentity = Customer.builder().name("길동").address(addressEntity).build();
-		Customer saved = customerRepository.save(customerentity);
+		// 주소등록
+		addressRepository.save(Address.builder()
+				.zipcode("01000")
+				.address("서울")
+				.customer(customerentity)
+				.build());
+		
+		addressRepository.save(Address.builder()
+				.zipcode("04411")
+				.address("대구")
+				.customer(customerentity)
+				.build());
 
 		// when(실행)
-		Customer customer = customerRepository.findById(saved.getId()).get();
-		log.info(customer.getName() + ":" + customer.getAddress().getZipcode());
-		
+		// 고객조회 (주소록조회)
+		Customer customer = customerRepository.findById(saved.getId()).get(); // 단건조회
+		customer.getAddress().forEach(addr -> System.out.println(addr.getZipcode() + ":" + addr.getAddress()));
+
 		// then(검증)
-		assertEquals("04411", customer.getAddress().getZipcode());
+		assertEquals("04411", customer.getAddress().get(0).getZipcode());
 	}
 }

@@ -1,14 +1,16 @@
 package com.example.demo.repository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.Builder;
@@ -40,9 +42,10 @@ public class Customer {
 	@Temporal(TemporalType.TIMESTAMP)
 	LocalDateTime regdate;
 	
-	@OneToOne
-	@JoinColumn(name = "address_id")
-	Address address;
+	// 하나의 사람이 여러개의 주소를 가짐
+	// JoinColumn은 한군데에서만
+	@OneToMany(mappedBy = "customer", fetch = FetchType.EAGER) // eager = 즉시조회?
+	List<Address> address = new ArrayList<Address>();
 	
 	// 이렇게 하면 3개만 추가 할 수 있다.
 	// 이친구가 들어가면 기본생성자가 필요하다 noargsconstructor
@@ -52,7 +55,7 @@ public class Customer {
 		this.name = name;
 		this.phone = phone;
 		this.email = email;
-		this.address = address;
+		this.address.add(address); // 배열이니까 = 이 아니라 .add로
 	}
 	
 	public void updateNameAndEmail(String name, String email) {
