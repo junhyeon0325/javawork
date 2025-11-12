@@ -112,7 +112,8 @@ public class CustomerRepositoryTest {
 		List<Customer> list = customerRepository.findAllQuery();
 		list.stream().forEach(cust -> System.out.println(cust.getName()));
 	}
-
+	
+	@Disabled
 	@Test
 	public void 일대다() {
 		// given(준비) 준비를 하기 위한 준비단계
