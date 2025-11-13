@@ -35,34 +35,21 @@ img {
 			</tr>
 		</thead>
 		<tbody id="list">
-
+			<tr th:each="book : ${bookList}">
+				<td th:text="${book.bookNo}"></td>
+				<td th:text="${book.bookName}"></td>
+				<td>
+					<img th:src="@{|/images/${book.bookCoverimg}|}" /> 
+				</td>
+				<td th:text="${book.bookDate}"></td>
+				<td th:text="${#numbers.formatDecimal(book.bookPrice, 0, 'COMMA', 0, 'POINT')}"></td> 
+				<td th:text="${book.bookPublisher}"></td>
+				<td th:text="${book.bookInfo}"></td>
+			</tr>
 		</tbody>
 	</table>
-	<script>
-	
-	getList();
-	function getList(){
-		fetch("/list/book")
-			.then((response) => response.json())
-			.then((datas) => {
-				let reply = document.querySelector("#list");
-				for(data of datas){
-					let price = data.bookPrice.toLocaleString('ko-KR');
-					let newTag =
-						`<tr>
-							<td>${data.bookNo}</td>
-							<td>${data.bookName}</td>
-							<td><img src="images/${data.bookCoverimg}"/></td>
-							<td>${data.bookDate}</td>
-							<td>${price}</td>
-							<td>${data.bookPublisher}</td>
-							<td>${data.bookInfo}</td>
-						</tr>`
-					  reply.insertAdjacentHTML("beforeend",newTag);
-				}
-			})	
-	}
-	
+    <script>
+	// getList() 함수 및 fetch 코드를 모두 제거합니다.
 	</script>
 </body>
 </html>
