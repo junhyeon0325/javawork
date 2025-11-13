@@ -75,7 +75,7 @@ public class EgovArticleController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovArticleController.class);
 	
-	@Resource(name = "EgovArticleService")
+	@Resource(name = "EgovArticleService") //@Autowired + @Qualified 두개합친거임 
     private EgovArticleService egovArticleService;
 
     @Resource(name = "EgovBBSMasterService")
