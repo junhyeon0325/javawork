@@ -2,6 +2,8 @@ package com.example.demo.repository;
 
 import java.util.List;
 
+import com.example.demo.common.BaseTimeEntity;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,7 +25,7 @@ import lombok.NoArgsConstructor;
 @Getter   
 @NoArgsConstructor
 @Entity
-public class Posts{
+public class Posts extends BaseTimeEntity{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;

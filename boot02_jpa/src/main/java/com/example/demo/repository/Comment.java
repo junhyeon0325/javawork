@@ -1,5 +1,7 @@
 package com.example.demo.repository;
 
+import com.example.demo.common.BaseTimeEntity;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Table(name = "comments")
 @Entity
-public class Comment {
+public class Comment extends BaseTimeEntity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)

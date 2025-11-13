@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.demo.common.BaseTimeEntity;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -27,7 +29,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter 
 @Entity
-public class Customer {
+public class Customer extends BaseTimeEntity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -39,8 +41,7 @@ public class Customer {
 	
 	String email;
 	
-	@Temporal(TemporalType.TIMESTAMP)
-	LocalDateTime regdate;
+	
 	
 	// 하나의 사람이 여러개의 주소를 가짐
 	// JoinColumn은 한군데에서만

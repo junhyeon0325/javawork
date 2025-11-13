@@ -43,7 +43,7 @@ public class CustomerRepositoryTest {
 
 	}
 
-	@Disabled
+//	@Disabled
 	@Test
 	public void 고객_수정() {
 		// given - 초기 데이터 저장
