@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="UTF-8">
+<title>도서목록조회</title>
+<style>
+table, th, td {
+	border: 1px solid black;
+	border-collapse: collapse;
+}
+
+img {
+	width: 100px;
+	height: 100px;
+}
+</style>
+
+</head>
+<body>
+	도서대여관리
+	<hr>
+	<div id="homemenu" th:insert="~{menu}"></div>
+	<div>도서 조회/수정</div>
+	<table>
+		<thead>
+			<tr>
+				<th>도서번호</th>
+				<th>도서명</th>
+				<th>표지</th>
+				<th>출판일자</th>
+				<th>금액</th>
+				<th>출판사</th>
+				<th>도서소개</th>
+			</tr>
+		</thead>
+		<tbody id="list">
+
+		</tbody>
+	</table>
+	<script>
+	
+	getList();
+	function getList(){
+		fetch("/list/book")
+			.then((response) => response.json())
+			.then((datas) => {
+				let reply = document.querySelector("#list");
+				for(data of datas){
+					let price = data.bookPrice.toLocaleString('ko-KR');
+					let newTag =
+						`<tr>
+							<td>${data.bookNo}</td>
+							<td>${data.bookName}</td>
+							<td><img src="images/${data.bookCoverimg}"/></td>
+							<td>${data.bookDate}</td>
+							<td>${price}</td>
+							<td>${data.bookPublisher}</td>
+							<td>${data.bookInfo}</td>
+						</tr>`
+					  reply.insertAdjacentHTML("beforeend",newTag);
+				}
+			})	
+	}
+	
+	
+	
+	</script>
+</body>
+</html>

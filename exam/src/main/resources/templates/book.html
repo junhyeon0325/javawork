@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="UTF-8">
+<title>book.html</title>
+</head>
+<body>
+	<div>도서대여관리</div>
+	<hr>
+	<div id="homemenu" th:insert="~{menu}"></div>
+	<h4>도서 등록</h4>
+	<form>
+		<div>
+			<label>도서번호</label> <input type="number" id="book_no" />
+		</div>
+		<div>
+			<label>도서명</label> <input type="text" id="book_name"/>
+		</div>
+		<div>
+			<label>도서표지</label> <input type="text" id="book_coverimg" />
+		</div>
+		<div>
+			<label>출판일자</label> <input type="Date" id="book_date" />
+		</div>
+		<div>
+			<label>금액</label> <input type="number" id="book_price" />
+		</div>
+		<div>
+			<label>출판사</label> <input type="text" id="book_publisher" />
+		</div>
+		<div>
+			<label>도서소개</label>
+			<textarea id="book_info"></textarea>
+		</div>
+		<div>
+			<button type="button" id="btn-save">등록</button>
+			<button>조회</button>
+		</div>
+	</form>
+
+	<!-- jQeury cdn -->
+	<script src="https://code.jquery.com/jquery-3.7.1.js"
+		integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+		crossorigin="anonymous"></script>
+	<script>
+	
+	/* 지금 객체로 만들고 있는거임 */
+	var main = {
+		init : function() {
+			/* this == main이 _this에 저장된다.*/  
+			var _this = this;
+			$("#btn-save").on("click", function() {
+				_this.save();
+			})
+		},
+
+		save : function() {
+			var data = {
+				book_name : $("#book_name").val(),
+				book_coverimg : $("#book_coverimg").val(),
+				book_date : $("#book_date").val(),
+				book_price : $("#book_price").val(),
+				book_publisher : $("#book_publisher").val(),
+				book_info : $('#book_info').val()
+			};
+
+			$.ajax({
+				/* url은 컨트롤러에 PostMapping뒤에있는 경로를 복사해서 넣음 */
+				url:"/book",
+				type:"post",
+				/* method = data */
+				contentType:"application/json",
+				/* JSON을 무조건 해줘야한다고 함 3개 세트임
+				RequestBody이거랑 application/json이거랑 JSON.stringify(data) 이거는 세트다*/
+				data: JSON.stringify(data),
+				
+			}).done((result) => {
+				alert('책이 등록되었습니다.');
+				location.href="/";
+			}).fail(error => {
+				alert(error);
+			});
+		}
+	}; // end of var
+	main.init();
+	</script>
+</body>
+</html>

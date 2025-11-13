@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<setting name="jdbcTypeForNull" value="VARCHAR" />
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+	</settings>
+	<typeAliases>
+		<!-- <typeAlias alias="boardVO" type="com.springbook.board.BoardVO" /> -->
+		<!-- 위에 알리아스 안만들고 밑에 패키지해서 하면 com아래에 있는걸 모두 스캔해서 알아서 해줌 -->
+		<!-- 이렇게하면은 매퍼쪽에 그냥 com.mapper.Employee 이거를 Employee 이렇게 축약해서 사용 가능 -->
+		<package name="com.example" />
+	</typeAliases>
+	<typeHandlers>
+		<!-- java.sql.Timestamp 를 java.util.Date 형으로 반환 -->
+		<typeHandler javaType="java.sql.Date"
+			handler="org.apache.ibatis.type.DateTypeHandler" />
+	</typeHandlers>
+</configuration>

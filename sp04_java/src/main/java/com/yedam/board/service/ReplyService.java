@@ -2,10 +2,6 @@ package com.yedam.board.service;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Mapper;
-
-import com.yedam.board.service.ReplyVO;
-
 
 public interface ReplyService {
 	// 댓글조회

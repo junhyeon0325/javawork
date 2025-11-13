@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- <mapper namespace="todoDAO"> -->
+<mapper namespace="egovframework.tdo.service.impl.TodoMapper">
+	
+
+	<resultMap id="todo" type="egovframework.tdo.service.TodoVO">
+		<result property="no" column="NO" />
+		<result property="title" column="TITLE" />
+		<result property="complete" column="COMPLETE" />
+	</resultMap>
+	
+	<insert id="insertTodo">
+		<![CDATA[
+			INSERT INTO TODO 
+				( NO
+				  , TITLE
+				  , COMPLETE )
+			VALUES ( #{no}
+				  , #{title}
+				  , #{complete} )
+		]]>
+	</insert>
+	
+	<update id="updateTodo">
+		<![CDATA[
+			UPDATE TODO
+			SET NO=#{no}
+				, TITLE=#{title}
+				, COMPLETE=#{complete}
+						WHERE NO=#{no}
+				]]>
+	</update>
+	
+	<delete id="deleteTodo">
+		<![CDATA[
+			DELETE FROM TODO 
+						WHERE NO=#{no}
+				]]>
+	</delete>
+	
+	<select id="selectTodo" resultMap="todo">
+		<![CDATA[
+			SELECT
+				NO
+				, TITLE
+				, COMPLETE
+			FROM TODO
+						WHERE NO=#{no}
+				]]>
+	</select>
+	
+	<select id="selectTodoList" parameterType="egovframework.tdo.service.TodoVO" resultType="egovMap">
+SELECT * FROM (
+	SELECT A.*, ROWNUM RNUM FROM (
+				SELECT
+								NO
+								, TITLE
+								, COMPLETE
+						FROM TODO
+				WHERE 1=1
+				<if test="searchKeyword != null and searchKeyword != ''">
+					<if test="searchCondition == 0">AND
+						NO = #{searchKeyword}
+					</if>
+					<if test="searchCondition == 1">AND
+						TITLE LIKE '%' || #{searchKeyword} || '%'
+					</if>
+				</if>
+					ORDER BY 
+						NO DESC
+		
+		<![CDATA[					
+	) A WHERE ROWNUM <= #{lastIndex}
+)WHERE RNUM > #{firstIndex}
+]]>
+	</select>	
+	<select id="selectTodoListTotCnt" parameterType="egovframework.tdo.service.TodoVO" resultType="int">
+			SELECT COUNT(*) totcnt
+			FROM TODO
+			WHERE 1=1
+			<if test="searchKeyword != null and searchKeyword != ''">
+				<if test="searchCondition == 0">AND
+					NO = #{searchKeyword}
+				</if>
+				<if test="searchCondition == 1">AND
+					TITLE LIKE '%' || #{searchKeyword} || '%'
+				</if>
+			</if>
+	</select>
+
+</mapper>
