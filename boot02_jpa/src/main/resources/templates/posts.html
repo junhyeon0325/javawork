@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<form>
+		제목:<input id="title"><br>
+		<!--  -->
+		작성자:<input id="author"><br>
+		<textarea rows="3" cols="50" id="content"></textarea>
+		<button type="button" id="btn-save">등록</button>
+	</form>
+
+	<!-- jQeury cdn -->
+	<script src="https://code.jquery.com/jquery-3.7.1.js"
+		integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+		crossorigin="anonymous"></script>
+	<script>
+		/* 지금 객체로 만들고 있는거임 */
+		var main = {
+			init : function() {
+				var _this = this;
+				$("#btn-save").on("click", function() {
+					_this.save();
+				})
+			},
+
+			save : function() {
+				/* 클라이언트 쪽에서 하는 유효성 검사
+				서버쪽에서 유효성 검사 해도 상관없다.*/
+				if(!$("#content").val()) {
+					alert("글등록");
+					return;
+				}
+				
+				var data = {
+					title : $("#title").val(),
+					author : $("#author").val(),
+					content : $("#content").val()
+				};
+
+				$.ajax({
+					/* url은 컨트롤러에 PostMapping뒤에있는 경로를 복사해서 넣음 */
+					url:"/api/v1/posts",
+					type:"post",
+					/* method = data */
+					contentType:"application/json",
+					/* JSON을 무조건 해줘야한다고 함 3개 세트임
+					RequestBody이거랑 application/json이거랑 JSON.stringify(data) 이거는 세트다*/
+					data: JSON.stringify(data),
+					
+				}).done((result) => {
+					alert('글이 등록되었습니다.');
+					location.href="/";
+				}).fail(error => {
+					alert(error);
+				});
+			}
+		};
+		main.init();
+	</script>
+</body>
+</html>
