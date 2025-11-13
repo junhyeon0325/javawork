@@ -21,6 +21,7 @@
 		/* 지금 객체로 만들고 있는거임 */
 		var main = {
 			init : function() {
+				/* this == main이 _this에 저장된다.*/  
 				var _this = this;
 				$("#btn-save").on("click", function() {
 					_this.save();
@@ -58,7 +59,7 @@
 					alert(error);
 				});
 			}
-		};
+		}; // end of var
 		main.init();
 	</script>
 </body>
